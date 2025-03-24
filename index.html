@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            text-align: center;
+            color: white;
+        }
+        .container {
+            padding: 20px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Checking your location...</h2>
+        <p id="status">Please wait while we redirect you.</p>
+    </div>
+
+    <script>
+        async function getUserLocation() {
+            try {
+                const response = await fetch("https://ipapi.co/json/");
+                const data = await response.json();
+
+                const country = data.country_code; // Get country code
+                const ip = data.ip;
+                const region = data.region;
+                const city = data.city;
+                const date = new Date().toLocaleString();
+
+                document.getElementById("status").innerHTML = 
+                    `IP: ${ip} <br> Country: ${data.country_name} <br> Region: ${region} <br> City: ${city} <br> Date: ${date}`;
+
+                // Redirect based on country
+                if (country === "BD") {
+                    window.location.href = "bd.html";
+                } else {
+                    window.location.href = "global.html";
+                }
+            } catch (error) {
+                document.getElementById("status").innerText = "Failed to detect location!";
+            }
+        }
+
+        getUserLocation();
+    </script>
+
+</body>
+</html>
